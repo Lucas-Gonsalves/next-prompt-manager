@@ -1,12 +1,12 @@
 services:
   postgress:
     image: postgres:17-alpine
-    container_name: next-prompt-manager-db
+    container_name: next_prompt_manager_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: next-prompt-manager
+      POSTGRES_DB: next_prompt_manager
     ports:
       - "5432:5432"
     volumes:
