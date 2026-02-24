@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import { Layout } from "@/components/layout";
 
 export const metadata: Metadata = {
   title: "Prompt Manager",
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} text-ace bg-gray-900 text-white antialiased`}
       >
-        {children}
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
