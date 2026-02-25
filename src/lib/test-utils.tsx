@@ -9,4 +9,4 @@ function customRender(
 }
 
 export * from "@testing-library/react";
-export { customRender as Render };
+export { customRender as render };

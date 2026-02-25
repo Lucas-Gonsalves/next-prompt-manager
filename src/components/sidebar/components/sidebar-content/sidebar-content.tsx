@@ -13,7 +13,7 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 
 export const SidebarContent = () => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsCollapsed((prev) => !prev);
 
@@ -75,7 +75,7 @@ export const SidebarContent = () => {
             <Link href="/new">
               <Button className="w-full" size="lg">
                 <PlusIcon className="mr-2 h-4 w-5" />
-                <span>Novo Prompt</span>
+                <span>New prompt</span>
               </Button>
             </Link>
           </div>
