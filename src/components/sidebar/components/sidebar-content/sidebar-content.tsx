@@ -32,7 +32,7 @@ export const SidebarContent = () => {
             <Button
               variant="icon"
               className="hidden rounded-lg p-2 md:inline-flex"
-              aria-label="expand-sidebar"
+              aria-label="Expand sidebar"
               title="Expand sidebar"
               onClick={toggleSidebar}
             >
@@ -48,7 +48,7 @@ export const SidebarContent = () => {
             <div className="flex items-center justify-between">
               <Button
                 variant="icon"
-                aria-label="close-menu"
+                aria-label="Close Menu"
                 title="Close menu"
                 onClick={toggleSidebar}
               >
@@ -64,6 +64,8 @@ export const SidebarContent = () => {
               <Button
                 variant="icon"
                 className="hidden md:inline-flex"
+                aria-label="Minimize sidebar"
+                title="Minimize sidebar"
                 onClick={toggleSidebar}
               >
                 <ArrowLeftToLineIcon className="h-5 w-5 text-gray-100" />
