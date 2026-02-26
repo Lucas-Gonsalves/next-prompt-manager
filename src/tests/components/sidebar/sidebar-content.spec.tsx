@@ -7,7 +7,9 @@ const makeSut = () => {
 };
 
 describe("SidebarContent", () => {
-  it("should render a new prompt button", () => {
+  const user = userEvent.setup();
+
+  it("Should render a new prompt button", () => {
     makeSut();
 
     expect(screen.getByRole("complementary")).toBeVisible();
@@ -15,9 +17,7 @@ describe("SidebarContent", () => {
   });
 
   describe("collapse / exand", () => {
-    const user = userEvent.setup();
-
-    it("should start expanded and display minimize button", () => {
+    it("Should start expanded and display minimize button", () => {
       makeSut();
       const aside = screen.getByRole("complementary");
       expect(aside).toBeVisible();
@@ -33,22 +33,35 @@ describe("SidebarContent", () => {
       expect(expandButton).not.toBeInTheDocument();
     });
 
-    it("should contract and display expand button", async () => {
+    it("Should contract and display expand button", async () => {
       makeSut();
 
       const collapseButton = screen.getByRole("button", {
-        name: "Minimize sidebar",
+        name: /minimize sidebar/i,
       });
 
       await user.click(collapseButton);
 
       const expandButton = screen.queryByRole("button", {
-        name: "Expand sidebar",
+        name: /expand sidebar/i,
       });
 
       expect(expandButton).toBeInTheDocument();
 
       expect(collapseButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe("New prompt", () => {
+    it("Should navigate the user to the new prompt /new", async () => {
+      makeSut();
+
+      const link = screen.getByRole("link", {
+        name: /new prompt/i,
+      });
+
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/new");
     });
   });
 });
