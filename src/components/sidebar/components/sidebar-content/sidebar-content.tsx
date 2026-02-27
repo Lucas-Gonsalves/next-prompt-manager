@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeftToLineIcon,
@@ -11,11 +11,36 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
-export const SidebarContent = () => {
+type Prompt = {
+  id: string;
+  title: string;
+  content: string;
+};
+
+export type SidebarContentProps = {
+  prompts: Prompt[];
+};
+
+export const SidebarContent = ({ prompts }: SidebarContentProps) => {
+  const router = useRouter();
+
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [query, setQuery] = useState("");
 
   const toggleSidebar = () => setIsCollapsed((prev) => !prev);
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = event.target.value;
+    setQuery(newQuery);
+
+    startTransition(() => {
+      const url = newQuery ? `/?q=${encodeURIComponent(newQuery)}` : "/";
+      router.push(url);
+    });
+  };
 
   return (
     <aside
@@ -73,8 +98,21 @@ export const SidebarContent = () => {
             </header>
           </div>
 
+          <section className="mb-5">
+            <form action="">
+              <Input
+                name="q"
+                type="text"
+                value={query}
+                placeholder="Search prompts..."
+                onChange={handleQueryChange}
+                autoFocus
+              />
+            </form>
+          </section>
+
           <div>
-            <Link href="/new">
+            <Link href="/new" className="outline-none" tabIndex={-1}>
               <Button className="w-full" size="lg">
                 <PlusIcon className="mr-2 h-4 w-5" />
                 <span>New prompt</span>
@@ -83,6 +121,10 @@ export const SidebarContent = () => {
           </div>
         </section>
       )}
+
+      {prompts.map((prompt) => (
+        <p key={`key_of_prompt_${prompt.id}`}>{prompt.title}</p>
+      ))}
     </aside>
   );
 };

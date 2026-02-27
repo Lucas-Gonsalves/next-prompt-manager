@@ -12,7 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:component": "jest src/tests/components/"
+    "test:component": "jest --watch src/tests/components/"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
