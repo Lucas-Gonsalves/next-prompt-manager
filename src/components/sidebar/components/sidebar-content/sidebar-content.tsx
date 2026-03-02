@@ -4,7 +4,7 @@ import { startTransition, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeftToLineIcon,
-  ArrowRightIcon,
+  ArrowRightToLineIcon,
   PlusIcon,
   XIcon,
 } from "lucide-react";
@@ -13,15 +13,11 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-
-type Prompt = {
-  id: string;
-  title: string;
-  content: string;
-};
+import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
+import { PromptList } from "@/components/prompts/components";
 
 export type SidebarContentProps = {
-  prompts: Prompt[];
+  prompts: PromptSummary[];
 };
 
 export const SidebarContent = ({ prompts }: SidebarContentProps) => {
@@ -61,70 +57,82 @@ export const SidebarContent = ({ prompts }: SidebarContentProps) => {
               title="Expand sidebar"
               onClick={toggleSidebar}
             >
-              <ArrowRightIcon className="h-5 w-5 text-gray-100" />
+              <ArrowRightToLineIcon className="h-5 w-5 text-gray-100" />
             </Button>
           </header>
-        </section>
-      )}
-
-      {!isCollapsed && (
-        <section className="p-6">
-          <div className="mb-4 md:hidden">
-            <div className="flex items-center justify-between">
-              <Button
-                variant="icon"
-                aria-label="Close Menu"
-                title="Close menu"
-                onClick={toggleSidebar}
-              >
-                <XIcon className="h-5 w-5 text-gray-100" />
-              </Button>
-            </div>
-          </div>
-
-          <div className="mb-6 flex w-full items-center justify-between">
-            <header className="flex w-full items-center justify-between">
-              <Logo />
-
-              <Button
-                variant="icon"
-                className="hidden md:inline-flex"
-                aria-label="Minimize sidebar"
-                title="Minimize sidebar"
-                onClick={toggleSidebar}
-              >
-                <ArrowLeftToLineIcon className="h-5 w-5 text-gray-100" />
-              </Button>
-            </header>
-          </div>
-
-          <section className="mb-5">
-            <form action="">
-              <Input
-                name="q"
-                type="text"
-                value={query}
-                placeholder="Search prompts..."
-                onChange={handleQueryChange}
-                autoFocus
-              />
-            </form>
-          </section>
-
-          <div>
-            <Link href="/new" className="outline-none" tabIndex={-1}>
-              <Button className="w-full" size="lg">
-                <PlusIcon className="mr-2 h-4 w-5" />
-                <span>New prompt</span>
+          <div className="space-4 flex flex-col items-center">
+            <Link href="/new" tabIndex={-1}>
+              <Button aria-label="New prompt" title="New prompt">
+                <PlusIcon className="h-5 w-5 text-white" />
               </Button>
             </Link>
           </div>
         </section>
       )}
 
-      {prompts.map((prompt) => (
-        <p key={`key_of_prompt_${prompt.id}`}>{prompt.title}</p>
-      ))}
+      {!isCollapsed && (
+        <>
+          <section className="p-6">
+            <div className="mb-4 md:hidden">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="icon"
+                  aria-label="Close Menu"
+                  title="Close menu"
+                  onClick={toggleSidebar}
+                >
+                  <XIcon className="h-5 w-5 text-gray-100" />
+                </Button>
+              </div>
+            </div>
+
+            <div className="mb-6 flex w-full items-center justify-between">
+              <header className="flex w-full items-center justify-between">
+                <Logo />
+
+                <Button
+                  variant="icon"
+                  className="hidden md:inline-flex"
+                  aria-label="Minimize sidebar"
+                  title="Minimize sidebar"
+                  onClick={toggleSidebar}
+                >
+                  <ArrowLeftToLineIcon className="h-5 w-5 text-gray-100" />
+                </Button>
+              </header>
+            </div>
+
+            <section className="mb-5">
+              <form action="">
+                <Input
+                  name="q"
+                  type="text"
+                  value={query}
+                  placeholder="Search prompts..."
+                  onChange={handleQueryChange}
+                  autoFocus
+                />
+              </form>
+            </section>
+
+            <div>
+              <Link href="/new" className="outline-none" tabIndex={-1}>
+                <Button className="w-full" size="lg">
+                  <PlusIcon className="mr-2 h-4 w-5" />
+                  <span>New prompt</span>
+                </Button>
+              </Link>
+            </div>
+          </section>
+
+          <nav
+            className="flex-1 overflow-auto px-6 pb-6"
+            aria-label="List of prompts"
+          >
+            <PromptList prompts={prompts} />
+          </nav>
+        </>
+      )}
     </aside>
   );
 };
