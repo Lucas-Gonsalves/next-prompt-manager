@@ -15,7 +15,8 @@
     "db:migrate": "prisma migrate dev",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:component": "jest --watch src/tests/components/"
+    "test:component": "jest --watch src/tests/components/",
+    "test:app-actions": "jest --watch src/tests/app/actions/"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
