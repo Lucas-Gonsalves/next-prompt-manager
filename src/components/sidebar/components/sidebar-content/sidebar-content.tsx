@@ -1,6 +1,12 @@
 "use client";
 
-import { startTransition, useActionState, useRef, useState } from "react";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeftToLineIcon,
@@ -53,6 +59,11 @@ export const SidebarContent = ({ prompts }: SidebarContentProps) => {
       formRef.current?.requestSubmit();
     });
   };
+
+  useEffect(() => {
+    if (!hasQuery) return;
+    formRef.current?.requestSubmit();
+  }, [hasQuery]);
 
   return (
     <aside

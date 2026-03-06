@@ -119,6 +119,43 @@ describe("SidebarContent", () => {
       expect(newPromptButton).toBeVisible();
     });
 
+    it("should expand when click the expand button", async () => {
+      makeSut();
+      const collapseButton = screen.getByRole("button", {
+        name: /minimize sidebar/i,
+      });
+
+      await user.click(collapseButton);
+
+      const expandButton = screen.getByRole("button", {
+        name: /expand sidebar/i,
+      });
+
+      await user.click(expandButton);
+
+      expect(
+        screen.getByRole("button", { name: /minimize sidebar/i })
+      ).toBeVisible();
+
+      expect(
+        screen.getByRole("navigation", { name: "List of prompts" })
+      ).toBeVisible();
+    });
+
+    it("should submit form when type in search field", async () => {
+      const submitSpy = jest
+        .spyOn(HTMLFormElement.prototype, "requestSubmit")
+        .mockImplementation(() => undefined);
+      makeSut();
+
+      const searchInput = screen.getByPlaceholderText("Search prompts...");
+
+      await user.type(searchInput, "AI");
+
+      expect(submitSpy).toHaveBeenCalled();
+      submitSpy.mockRestore();
+    });
+
     it("Shouln't display the list of prompts in sidebar minimized", async () => {
       makeSut();
 
