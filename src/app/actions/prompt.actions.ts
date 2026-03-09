@@ -4,6 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { SearchPromptsUseCase } from "@/core/application/prompts/search-prompts.use-case";
 import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
 import { PrismaPromptRepository } from "@/infra/repository/prisma-prompt.repository";
+import {
+  CreatePromptDTO,
+  createPromptSchema,
+} from "@/core/application/prompts/create-prompt.dto";
+import z, { success } from "zod";
+import { CreatePromptUseCase } from "@/core/application/prompts/create-prompt.use-case";
 
 type SearchFormState = {
   success?: boolean;
@@ -11,12 +17,49 @@ type SearchFormState = {
   message?: string;
 };
 
+export async function createPromptAction(data: CreatePromptDTO) {
+  const validated = createPromptSchema.safeParse(data);
+
+  if (!validated.success) {
+    const { fieldErrors } = z.flattenError(validated.error);
+
+    return {
+      success: false,
+      message: "Validation error.",
+      errors: fieldErrors,
+    };
+  }
+
+  try {
+    const repository = new PrismaPromptRepository(prisma);
+    const useCase = new CreatePromptUseCase(repository);
+    await useCase.execute(validated.data);
+  } catch (error) {
+    const _error = error as Error;
+    if (_error.message === "PROMPT_ALREADY_EXISTS") {
+      return {
+        success: false,
+        message: "This prompt already exists.",
+      };
+    }
+
+    return {
+      success: false,
+      message: "Failed to create the prompt.",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Prompt created with success.",
+  };
+}
+
 export async function searchPromptAction(
   _prev: SearchFormState,
   formData: FormData
 ): Promise<SearchFormState> {
   const term = String(formData.get("q") ?? "").trim();
-
   const repository = new PrismaPromptRepository(prisma);
   const useCase = new SearchPromptsUseCase(repository);
 

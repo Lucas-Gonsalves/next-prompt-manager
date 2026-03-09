@@ -4,5 +4,5 @@ export const createPromptSchema = z.object({
   title: z.string().min(1, "Title is required."),
   content: z.string().min(1, "Content is required."),
 });
-
+// tthis is the smooth typing animation
 export type CreatePromptDTO = z.infer<typeof createPromptSchema>;
