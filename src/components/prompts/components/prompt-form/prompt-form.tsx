@@ -1,28 +1,69 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  CreatePromptDTO,
+  createPromptSchema,
+} from "@/core/application/prompts/create-prompt.dto";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 export const PromptForm = () => {
+  const form = useForm<CreatePromptDTO>({
+    resolver: zodResolver(createPromptSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
+
   return (
-    <form className="space-y-6">
-      <header className="mb-6 flex flex-wrap items-center justify-end gap-2">
-        <Button type="submit" size="sm">
-          Save
-        </Button>
-      </header>
+    <Form {...form}>
+      <form className="space-y-6">
+        <header className="mb-6 flex flex-wrap items-center justify-end gap-2">
+          <Button type="submit" size="sm">
+            Save
+          </Button>
+        </header>
 
-      <Input
-        placeholder="Prompt Title"
-        variant="transparent"
-        size="lg"
-        autoFocus
-      />
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  placeholder="Prompt Title"
+                  variant="transparent"
+                  size="lg"
+                  autoFocus
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
-      <Textarea
-        placeholder="Type a content of the prompt..."
-        variant="transparent"
-        size="lg"
-      />
-    </form>
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  placeholder="Type a content of the prompt..."
+                  variant="transparent"
+                  size="lg"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
   );
 };
