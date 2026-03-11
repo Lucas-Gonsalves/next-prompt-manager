@@ -1,12 +1,24 @@
 import { prisma } from "@/lib/prisma";
 import { SidebarContent } from "./components";
+import { PrismaPromptRepository } from "@/infra/repository/prisma-prompt.repository";
+import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
 
 export const Sidebar = async () => {
-  const prompts = await prisma.prompt.findMany();
+  const repository = new PrismaPromptRepository(prisma);
+  let initialPrompts: PromptSummary[] = [];
+
+  try {
+    const prompts = await repository.findMany();
+    initialPrompts = prompts.map((prompt) => ({
+      ...prompt,
+    }));
+  } catch {
+    initialPrompts = [];
+  }
 
   return (
     <aside>
-      <SidebarContent prompts={prompts} />
+      <SidebarContent prompts={initialPrompts} />
     </aside>
   );
 };
