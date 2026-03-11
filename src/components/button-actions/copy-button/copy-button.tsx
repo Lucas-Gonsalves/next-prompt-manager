@@ -5,7 +5,7 @@ import { CheckIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-type CopyButtonProps = {
+export type CopyButtonProps = {
   content: string;
 };
 

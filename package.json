@@ -13,10 +13,8 @@
     "db:generate": "prisma generate",
     "db:seed": "prisma db seed",
     "db:migrate": "prisma migrate dev",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:component": "jest --watch src/tests/components/",
-    "test:app-actions": "jest --watch src/tests/app/actions/"
+    "test:all": "jest --watch src/tests",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
