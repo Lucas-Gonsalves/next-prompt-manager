@@ -8,7 +8,7 @@ import {
   CreatePromptDTO,
   createPromptSchema,
 } from "@/core/application/prompts/create-prompt.dto";
-import z, { success } from "zod";
+import z from "zod";
 import { CreatePromptUseCase } from "@/core/application/prompts/create-prompt.use-case";
 
 type SearchFormState = {

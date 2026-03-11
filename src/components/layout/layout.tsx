@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { Toaster } from "sonner";
 
 type LayoutProps = {
   children: ReactNode;
@@ -14,6 +15,8 @@ export const Layout = ({ children }: LayoutProps) => {
           {children}
         </div>
       </main>
+
+      <Toaster position="top-right" />
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export const PromptForm = () => {
   const router = useRouter();
@@ -27,10 +28,11 @@ export const PromptForm = () => {
   const submit = async (data: CreatePromptDTO) => {
     const result = await createPromptAction(data);
 
-    if (result.success) {
+    if (!result.success) {
+      toast.error(result.message);
       return;
     }
-
+    toast.success(result.message);
     router.refresh();
   };
 
