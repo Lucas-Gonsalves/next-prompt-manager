@@ -1,6 +1,7 @@
 "use client";
 
 import { createPromptAction } from "@/app/actions/prompt.actions";
+import { CopyButton } from "@/components/button-actions";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,8 @@ export const PromptForm = () => {
     },
   });
 
+  const content = form.watch("content");
+
   const submit = async (data: CreatePromptDTO) => {
     const result = await createPromptAction(data);
 
@@ -40,6 +43,7 @@ export const PromptForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="space-y-6">
         <header className="mb-6 flex flex-wrap items-center justify-end gap-2">
+          <CopyButton content={content} />
           <Button type="submit" size="sm">
             Save
           </Button>
