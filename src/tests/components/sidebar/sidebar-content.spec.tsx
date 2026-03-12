@@ -3,7 +3,7 @@ import {
   type SidebarContentProps,
 } from "@/components/sidebar/components";
 
-import { render, screen } from "@/lib/test-utils";
+import { render, screen, waitFor } from "@/lib/test-utils";
 import userEvent from "@testing-library/user-event";
 
 const pushMock = jest.fn();
@@ -23,6 +23,12 @@ const initialPrompts = [
     content: "Content 02",
   },
 ];
+let mockSearchParams = new URLSearchParams();
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => mockSearchParams,
+}));
 
 const makeSut = (
   { prompts = initialPrompts }: SidebarContentProps = {} as SidebarContentProps
@@ -142,20 +148,6 @@ describe("SidebarContent", () => {
       ).toBeVisible();
     });
 
-    it("should submit form when type in search field", async () => {
-      const submitSpy = jest
-        .spyOn(HTMLFormElement.prototype, "requestSubmit")
-        .mockImplementation(() => undefined);
-      makeSut();
-
-      const searchInput = screen.getByPlaceholderText("Search prompts...");
-
-      await user.type(searchInput, "AI");
-
-      expect(submitSpy).toHaveBeenCalled();
-      submitSpy.mockRestore();
-    });
-
     it("Shouln't display the list of prompts in sidebar minimized", async () => {
       makeSut();
 
@@ -200,6 +192,43 @@ describe("SidebarContent", () => {
       await user.clear(searchInput);
       const lastClearCall = pushMock.mock.calls.at(-1);
       expect(lastClearCall?.[0]).toBe("/");
+    });
+
+    it("should submit form when type in search field", async () => {
+      const submitSpy = jest
+        .spyOn(HTMLFormElement.prototype, "requestSubmit")
+        .mockImplementation(() => undefined);
+      makeSut();
+
+      const searchInput = screen.getByPlaceholderText("Search prompts...");
+
+      await user.type(searchInput, "AI");
+
+      expect(submitSpy).toHaveBeenCalled();
+      submitSpy.mockRestore();
+    });
+
+    it("should automatically submit when assembling a query when there is one.", async () => {
+      const submitSpy = jest
+        .spyOn(HTMLFormElement.prototype, "requestSubmit")
+        .mockImplementation(() => undefined);
+      const text = "text";
+      const searchParams = new URLSearchParams(`q=${text}`);
+      mockSearchParams = searchParams;
+      makeSut();
+
+      expect(submitSpy).toHaveBeenCalled();
+      submitSpy.mockRestore();
+    });
+
+    it("should search field should start with the search parameter.", async () => {
+      const text = "initial";
+      const searchParams = new URLSearchParams(`q=${text}`);
+      mockSearchParams = searchParams;
+      makeSut();
+      const searchInput = screen.getByPlaceholderText("Search prompts...");
+
+      await waitFor(() => expect(searchInput).toHaveValue(text));
     });
   });
 });

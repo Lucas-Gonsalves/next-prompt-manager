@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { SidebarContent } from "./components";
 import { PrismaPromptRepository } from "@/infra/repository/prisma-prompt.repository";
 import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
+import { Suspense } from "react";
+import { Spinner } from "../ui/spinner";
 
 export const Sidebar = async () => {
   const repository = new PrismaPromptRepository(prisma);
@@ -17,8 +19,8 @@ export const Sidebar = async () => {
   }
 
   return (
-    <aside>
+    <Suspense fallback={<Spinner />}>
       <SidebarContent prompts={initialPrompts} />
-    </aside>
+    </Suspense>
   );
 };

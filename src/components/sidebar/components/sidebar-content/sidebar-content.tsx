@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
 import { PromptList } from "@/components/prompts/components";
 import { searchPromptAction } from "@/app/actions/prompt.actions";
@@ -30,6 +30,9 @@ export type SidebarContentProps = {
 
 export const SidebarContent = ({ prompts }: SidebarContentProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialQuery = searchParams.get("q") ?? "";
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -41,7 +44,7 @@ export const SidebarContent = ({ prompts }: SidebarContentProps) => {
     }
   );
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const hasQuery = query.trim().length > 0;
@@ -61,9 +64,10 @@ export const SidebarContent = ({ prompts }: SidebarContentProps) => {
   };
 
   useEffect(() => {
-    if (!hasQuery) return;
-    formRef.current?.requestSubmit();
-  }, [hasQuery]);
+    if (initialQuery) {
+      formRef.current?.requestSubmit();
+    }
+  }, [initialQuery]);
 
   return (
     <aside
