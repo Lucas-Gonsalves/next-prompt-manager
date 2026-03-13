@@ -8,12 +8,11 @@
     "start": "next start",
     "format": "prettier --write",
     "typecheck": "tsc --noEmit --skipLibCheck",
-    "lint": "eslint",
-    "test": "jest",
+    "lint": "eslint --fix",
     "db:generate": "prisma generate",
     "db:seed": "prisma db seed",
     "db:migrate": "prisma migrate dev",
-    "test:all": "jest --watch src/tests",
+    "test": "jest --watch src/tests",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {

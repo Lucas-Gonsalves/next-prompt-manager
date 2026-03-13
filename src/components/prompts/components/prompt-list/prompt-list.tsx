@@ -1,7 +1,7 @@
 import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
 import { PromptCard } from "@/components/prompts/components";
 
-type PromptListProps = {
+export type PromptListProps = {
   prompts: PromptSummary[];
 };
 
