@@ -22,6 +22,9 @@ describe("SeachPromptUseCase", () => {
 
   const repository: PromptRepository = {
     findMany: async () => input,
+    create: async () => {},
+    findByTitle: async (title: string) =>
+      input.find((prompt) => prompt.title === title) ?? null,
     searchMany: async (term) =>
       input.filter(
         (prompt) =>
