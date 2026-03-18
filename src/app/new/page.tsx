@@ -1,5 +1,5 @@
-import { NewTemplate } from "@/templates/new-template";
+import { PromptForm } from '@/components/prompts';
 
-export default function New() {
-  return <NewTemplate />;
+export default function PromptNew() {
+  return <PromptForm />;
 }

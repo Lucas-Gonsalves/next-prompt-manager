@@ -6,4 +6,4 @@ export type Prompt = {
   updatedAt: Date;
 };
 
-export type PromptSummary = Pick<Prompt, "id" | "title" | "content">;
+export type PromptSummary = Pick<Prompt, 'id' | 'title' | 'content'>;

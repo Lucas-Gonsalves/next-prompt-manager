@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { CheckIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import { Check, Copy } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
 
 export type CopyButtonProps = {
   content: string;
@@ -30,11 +30,10 @@ export const CopyButton = ({ content }: CopyButtonProps) => {
       setIsCopied(true);
 
       clearTimer();
-
-      timerRef.current = setTimeout(() => setIsCopied(false), 750);
+      timerRef.current = setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       const _error = error as Error;
-      toast.error(`Error to copy a text: ${_error.message}`);
+      toast.error(`Erro ao copiar o texto: ${_error.message}`);
     }
   };
 
@@ -47,18 +46,18 @@ export const CopyButton = ({ content }: CopyButtonProps) => {
   return (
     <Button
       type="button"
-      size="sm"
       variant="outline"
-      className="disabled:opacity50 disabled:cursor-not-allowed"
+      size="sm"
+      className="disabled:opacity-50"
       disabled={isContentEmpty}
       onClick={handleCopy}
     >
       {isCopied ? (
-        <CheckIcon className="h-4 w-4 text-green-400" />
+        <Check className="w-4 h-4 text-green-400" />
       ) : (
-        <CheckIcon className="h-4 w-4" />
+        <Copy className="w-4 h-" />
       )}
-      <span>{isCopied ? "Copyed" : "Copy"}</span>
+      <span>{isCopied ? 'Copiado' : 'Copiar'}</span>
     </Button>
   );
 };

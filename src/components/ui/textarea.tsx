@@ -1,30 +1,30 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { cn } from "@/lib/utils";
-import { cva, VariantProps } from "class-variance-authority";
+import { cn } from '@/lib/utils';
+import { cva, VariantProps } from 'class-variance-authority';
 
 const textareaVariants = cva(
-  "w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none min-h-[300px] resize-none",
+  'w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none min-h-[300px] resize-none',
   {
     variants: {
       variant: {
         default:
-          "h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none",
-        transparent: "bg-transparent text-white placeholder:text-[#424242]",
+          'h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none',
+        transparent: 'bg-transparent text-white placeholder:text-[#424242]',
       },
       size: {
-        default: "h-9",
-        sm: "h-8",
-        lg: "h-16 text-base font-regular",
+        default: 'h-9',
+        sm: 'h-8',
+        lg: 'h-16 text-base font-regular',
       },
       readOnly: {
-        true: "focus:ring-0 focus:border-gray-600 cursor-default",
-        false: "focus:ring-2 focus:ring-accent-400 focus:border-transparent",
+        true: 'focus:ring-0 focus:border-gray-600 cursor-default',
+        false: 'focus:ring-2 focus:ring-accent-400 focus:border-transparent',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
       readOnly: false,
     },
   }
@@ -45,6 +45,6 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     );
   }
 );
-Textarea.displayName = "Textarea";
+Textarea.displayName = 'Textarea';
 
 export { Textarea };

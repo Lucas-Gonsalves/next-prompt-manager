@@ -1,20 +1,20 @@
-import { SearchPromptsUseCase } from "@/core/application/prompts/search-prompts.use-case";
-import { Prompt } from "@/core/domain/prompts/prompt.entity";
-import { PromptRepository } from "@/core/domain/prompts/prompt.repository";
+import { SearchPromptsUseCase } from '@/core/application/prompts/search-prompts.use-case';
+import { Prompt } from '@/core/domain/prompts/prompt.entity';
+import { PromptRepository } from '@/core/domain/prompts/prompt.repository';
 
-describe("SeachPromptUseCase", () => {
+describe('SearchPromptsUseCase', () => {
   const input: Prompt[] = [
     {
-      id: "1",
-      title: "Title 01",
-      content: "Title 01",
+      id: '1',
+      title: 'Title 01',
+      content: 'Content 01',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      id: "2",
-      title: "Title 02",
-      content: "Title 02",
+      id: '2',
+      title: 'Title 02',
+      content: 'Content 02',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
@@ -22,9 +22,6 @@ describe("SeachPromptUseCase", () => {
 
   const repository: PromptRepository = {
     findMany: async () => input,
-    create: async () => {},
-    findByTitle: async (title: string) =>
-      input.find((prompt) => prompt.title === title) ?? null,
     searchMany: async (term) =>
       input.filter(
         (prompt) =>
@@ -33,24 +30,25 @@ describe("SeachPromptUseCase", () => {
       ),
   };
 
-  it("should return all prompts when the term is empty", async () => {
+  it('deve retornar todos os prompts quando o termo for vazio', async () => {
     const useCase = new SearchPromptsUseCase(repository);
-    const results = await useCase.execute("");
+
+    const results = await useCase.execute('');
 
     expect(results).toHaveLength(2);
   });
 
-  it("should filter the list of prompts by the searched term", async () => {
+  it('deve filtrar a lista de prompts pelo termo pesquisado', async () => {
     const useCase = new SearchPromptsUseCase(repository);
-    const query = "title 01";
+    const query = 'title 01';
 
     const results = await useCase.execute(query);
 
     expect(results).toHaveLength(1);
-    expect(results[0].id).toBe("1");
+    expect(results[0].id).toBe('1');
   });
 
-  it("should apply trim to searches containing spaces in the term and return the entire list of prompts.", async () => {
+  it('deve aplicar trim em buscas com termo com espaços em branco e retornar toda a lista de prompts', async () => {
     const findMany = jest.fn().mockResolvedValue(input);
     const searchMany = jest.fn().mockResolvedValue([]);
     const repositoryWithSpies: PromptRepository = {
@@ -60,7 +58,7 @@ describe("SeachPromptUseCase", () => {
     };
 
     const useCase = new SearchPromptsUseCase(repositoryWithSpies);
-    const query = "   ";
+    const query = '   ';
 
     const results = await useCase.execute(query);
 
@@ -69,7 +67,7 @@ describe("SeachPromptUseCase", () => {
     expect(searchMany).not.toHaveBeenCalled();
   });
 
-  it("should search for terms with blank spaces, dealing with the trim", async () => {
+  it('deve buscar termo com espaços em branco, tratando com trim', async () => {
     const firstElement = input.slice(0, 1);
     const findMany = jest.fn().mockResolvedValue(input);
     const searchMany = jest.fn().mockResolvedValue(firstElement);
@@ -80,7 +78,7 @@ describe("SeachPromptUseCase", () => {
     };
 
     const useCase = new SearchPromptsUseCase(repositoryWithSpies);
-    const query = "title 02";
+    const query = ' title 02  ';
 
     const results = await useCase.execute(query);
 
@@ -89,7 +87,7 @@ describe("SeachPromptUseCase", () => {
     expect(findMany).not.toHaveBeenCalled();
   });
 
-  it("should handle the term undefined or null and return the complete list of prompts.", async () => {
+  it('deve lidar com termo undefined ou null e retornar a lista completa de prompts', async () => {
     const findMany = jest.fn().mockResolvedValue(input);
     const searchMany = jest.fn().mockResolvedValue([]);
     const repositoryWithSpies: PromptRepository = {

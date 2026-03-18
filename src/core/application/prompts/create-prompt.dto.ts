@@ -1,8 +1,8 @@
-import z from "zod";
+import z from 'zod';
 
 export const createPromptSchema = z.object({
-  title: z.string().min(1, "Title is required."),
-  content: z.string().min(1, "Content is required."),
+  title: z.string().min(1, 'Título é obrigatório'),
+  content: z.string().min(1, 'Conteúdo é obrigatório'),
 });
-// tthis is the smooth typing animation
+
 export type CreatePromptDTO = z.infer<typeof createPromptSchema>;

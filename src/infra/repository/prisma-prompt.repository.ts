@@ -1,20 +1,43 @@
-import { CreatePromptDTO } from "@/core/application/prompts/create-prompt.dto";
-import { Prompt } from "@/core/domain/prompts/prompt.entity";
-import { PromptRepository } from "@/core/domain/prompts/prompt.repository";
-import { PrismaClient } from "@/generated/prisma/client";
+import { CreatePromptDTO } from '@/core/application/prompts/create-prompt.dto';
+import { Prompt } from '@/core/domain/prompts/prompt.entity';
+import { PromptRepository } from '@/core/domain/prompts/prompt.repository';
+import { PrismaClient } from '@/generated/prisma/client';
 
 export class PrismaPromptRepository implements PromptRepository {
   constructor(private prisma: PrismaClient) {}
 
   async create(data: CreatePromptDTO): Promise<void> {
-    await this.prisma.prompt.create({ data });
+    await this.prisma.prompt.create({
+      data: {
+        title: data.title,
+        content: data.content,
+      },
+    });
+  }
+
+  async update(id: string, data: Partial<CreatePromptDTO>): Promise<Prompt> {
+    const updated = await this.prisma.prompt.update({
+      where: {id},
+      data: {
+        ...(data.title !== undefined ? { title: data.title } : {}),
+        ...(data.content !== undefined ? { content: data.content } : {}),
+      }
+    })
+
+    return updated
+  }
+
+  async findById(id: string): Promise<Prompt | null> {
+    const prompt = await this.prisma.prompt.findUnique({
+      where: { id },
+    });
+    return prompt;
   }
 
   async findMany(): Promise<Prompt[]> {
     const prompts = await this.prisma.prompt.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
-
     return prompts;
   }
 
@@ -27,19 +50,19 @@ export class PrismaPromptRepository implements PromptRepository {
   }
 
   async searchMany(term?: string): Promise<Prompt[]> {
-    const q = term?.trim() ?? "";
+    const q = term?.trim() ?? '';
+
     const prompts = await this.prisma.prompt.findMany({
       where: q
         ? {
             OR: [
-              { title: { contains: q, mode: "insensitive" } },
-              { content: { contains: q, mode: "insensitive" } },
+              { title: { contains: q, mode: 'insensitive' } },
+              { content: { contains: q, mode: 'insensitive' } },
             ],
           }
         : undefined,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
     });
-
     return prompts;
   }
 }

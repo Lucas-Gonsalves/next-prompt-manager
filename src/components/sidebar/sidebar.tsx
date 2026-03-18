@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/prisma";
-import { SidebarContent } from "./components";
-import { PrismaPromptRepository } from "@/infra/repository/prisma-prompt.repository";
-import { PromptSummary } from "@/core/domain/prompts/prompt.entity";
-import { Suspense } from "react";
-import { Spinner } from "../ui/spinner";
+import { PromptSummary } from '@/core/domain/prompts/prompt.entity';
+import { PrismaPromptRepository } from '@/infra/repository/prisma-prompt.repository';
+import { prisma } from '@/lib/prisma';
+import { Suspense } from 'react';
+import { Spinner } from '../ui/spinner';
+import { SidebarContent } from './sidebar-content';
 
 export const Sidebar = async () => {
   const repository = new PrismaPromptRepository(prisma);

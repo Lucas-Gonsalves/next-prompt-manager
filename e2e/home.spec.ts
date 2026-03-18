@@ -1,13 +1,14 @@
-import { test, expect, Page } from "@playwright/test";
+import { expect, test, type Page } from '@playwright/test';
 
-test("should load initial page", async ({ page }: { page: Page }) => {
-  await page.goto("/");
+test('deve carregar a página inicial', async ({ page }: { page: Page }) => {
+  await page.goto('/');
 
   await expect(
-    page.getByRole("heading", { name: "Select a prompt" })
+    page.getByRole('heading', { name: 'Selecione um prompt' })
   ).toBeVisible();
-
   await expect(
-    page.getByText("Choose a prompt on the side list to view and edit")
+    page.getByText(
+      'Escolha um prompt da lista ao lado para visualizar e editar'
+    )
   ).toBeVisible();
 });

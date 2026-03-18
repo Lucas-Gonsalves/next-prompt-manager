@@ -1,36 +1,36 @@
-import { ComponentProps } from "react";
+import * as React from 'react';
 
-import { cn } from "@/lib/utils";
-import { cva, VariantProps } from "class-variance-authority";
+import { cn } from '@/lib/utils';
+import { cva, VariantProps } from 'class-variance-authority';
 
 const inputVariants = cva(
-  "h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none",
+  'h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none',
   {
     variants: {
       variant: {
         default:
-          "h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none",
-        transparent: "bg-transparent text-white placeholder:text-[#424242]",
+          'h-11 w-full bg-gray-700 border border-gray-600 rounded-md p-3 text-white placeholder-gray-400 focus:outline-none',
+        transparent: 'bg-transparent text-white placeholder:text-[#424242]',
       },
       size: {
-        default: "h-11",
-        sm: "h-9",
-        lg: "h-14 text-2xl font-bold sm:h-16 sm:text-3xl",
+        default: 'h-9',
+        sm: 'h-8',
+        lg: 'h-14 text-2xl font-bold sm:h-16 sm:text-3xl',
       },
       readOnly: {
-        true: "focus:ring-0 focus:border-gray-600 cursor-default",
-        false: "focus:ring-2 focus:ring-ring focus:border-transparent",
+        true: 'focus:ring-0 focus:border-gray-600 cursor-default',
+        false: 'focus:ring-2 focus:ring-accent-400 focus:border-transparent',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
       readOnly: false,
     },
   }
 );
 
-type InputProps = Omit<ComponentProps<"input">, "size"> &
+type InputProps = Omit<React.ComponentProps<'input'>, 'size'> &
   VariantProps<typeof inputVariants>;
 
 function Input({

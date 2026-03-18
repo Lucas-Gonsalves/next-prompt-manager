@@ -1,20 +1,20 @@
-import { PrismaClient } from "@/generated/prisma/client";
-import { faker } from "@faker-js/faker";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from '@/generated/prisma/client';
+import { faker } from '@faker-js/faker';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const url = process.env.DATABASE_URL ?? "";
+const url = process.env.DATABASE_URL ?? '';
 const prisma = url
   ? new PrismaClient({ adapter: new PrismaPg({ connectionString: url }) })
   : undefined;
 
 function buildPrompt() {
   const category = faker.helpers.arrayElement([
-    "Code Review",
-    "Explain Concept",
-    "Write Email",
-    "Bug Report",
-    "Refactoring Plan",
-    "Feature Proposal",
+    'Code Review',
+    'Explain Concept',
+    'Write Email',
+    'Bug Report',
+    'Refactoring Plan',
+    'Feature Proposal',
   ]);
 
   const title = `${category}: ${faker.hacker.phrase()} ${faker.string.alphanumeric(4)}`;
@@ -22,7 +22,7 @@ function buildPrompt() {
     `Context: ${faker.lorem.sentences(2)}`,
     `Goal: ${faker.company.catchPhrase()}`,
     `Details: ${faker.lorem.paragraphs(2)}`,
-  ].join("\n\n");
+  ].join('\n\n');
 
   return { title, content };
 }
