@@ -1,7 +1,6 @@
 import { PrismaClient } from '@/generated/prisma/client';
 import test, { expect } from '@playwright/test';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
 
 test('Filtra a lista de prompts em tempo real baseado no termo digitado', async ({ page }) => {
   const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
