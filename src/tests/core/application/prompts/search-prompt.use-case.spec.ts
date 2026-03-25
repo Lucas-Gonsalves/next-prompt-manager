@@ -22,13 +22,13 @@ describe('SearchPromptsUseCase', () => {
 
   const repository: PromptRepository = {
     findMany: async () => input,
-    searchMany: async (term) =>
+    searchMany: async (term: string) =>
       input.filter(
         (prompt) =>
           prompt.title.toLowerCase().includes(term.toLocaleLowerCase()) ||
           prompt.content.toLowerCase().includes(term.toLocaleLowerCase())
       ),
-  };
+  } as PromptRepository;
 
   it('deve retornar todos os prompts quando o termo for vazio', async () => {
     const useCase = new SearchPromptsUseCase(repository);
