@@ -20,7 +20,7 @@ describe('SearchPromptsUseCase', () => {
     },
   ];
 
-  const repository: PromptRepository = {
+  const repository = {
     findMany: async () => input,
     searchMany: async (term: string) =>
       input.filter(
