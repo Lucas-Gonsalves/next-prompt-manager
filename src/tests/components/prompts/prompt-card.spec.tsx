@@ -11,6 +11,11 @@ jest.mock('@/app/actions/prompt.actions', () => ({
   deletePromptAction: (id: string) => deleteMock(id),
 }));
 
+const refreshMock = jest.fn()
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ refresh: refreshMock }),
+}));
+
 jest.mock('sonner', () => ({
   toast: { success: jest.fn(), error: jest.fn() },
 }));
@@ -20,6 +25,13 @@ const makeSut = ({ prompt }: PromptCardProps) => {
 };
 
 describe('PromptCard', () => {
+  beforeEach(() => {
+    deleteMock.mockReset();
+    refreshMock.mockReset();
+    (toast.success as jest.Mock).mockReset();
+    (toast.error as jest.Mock).mockReset();
+  })
+
   const user = userEvent.setup();
   const prompt = { id: '1', title: 'title 01', content: 'content 01' };
 
@@ -52,6 +64,7 @@ describe('PromptCard', () => {
     await user.click(screen.getByRole('button', { name: 'Confirmar remoção' }));
 
     expect(toast.success).toHaveBeenCalledWith('Prompt removido com sucesso!');
+    expect(refreshMock).toHaveBeenCalledTimes(1);
   });
 
   it('deveria exibir erro quando a action falhar', async () => {
@@ -67,12 +80,13 @@ describe('PromptCard', () => {
     await user.click(screen.getByRole('button', { name: 'Confirmar remoção' }));
 
     expect(toast.error).toHaveBeenCalledWith(errorMessage);
+    expect(refreshMock).not.toHaveBeenCalled();
   });
 
   it('deve exibir erro quando a action lançar uma exceção', async () => {
     const errorMessage = 'Erro';
     deleteMock.mockRejectedValueOnce(new Error(errorMessage));
-    render(<PromptCard prompt={prompt} />);
+    makeSut({ prompt })
 
     await user.click(screen.getByRole('button'));
     await user.click(screen.getByRole('button', { name: 'Confirmar remoção' }));
