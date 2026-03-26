@@ -99,6 +99,15 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
 body {
   font-family: var(--font-sans);
 }

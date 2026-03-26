@@ -1,7 +1,6 @@
 import { PrismaClient } from '@/generated/prisma/client';
 import test, { expect } from '@playwright/test';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
 
 test('Criação de prompt via UI (sucesso)', async ({ page }) => {
   const uniqueTitle = `E2E Prompt ${Date.now()}`;
@@ -23,8 +22,7 @@ test('Validação de duplicidade de título', async ({ page }) => {
   const duplicateTitle = 'E2E Duplicate Prompt 01';
   const content = 'Content';
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const adapter = new PrismaPg(pool);
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
   const prisma = new PrismaClient({ adapter });
   await prisma.prompt.deleteMany({ where: { title: duplicateTitle } });
   await prisma.prompt.create({

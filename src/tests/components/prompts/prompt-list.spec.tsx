@@ -5,10 +5,6 @@ const makeSut = ({ prompts }: PromptListProps) => {
   return render(<PromptList prompts={prompts} />);
 };
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => ({ refresh: jest.fn() }),
-}));
-
 describe('PromptList', () => {
   it('deveria renderizar lista com os prompts', () => {
     const prompts = [
